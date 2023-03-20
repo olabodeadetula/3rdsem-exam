@@ -9,7 +9,7 @@ pipeline {
         stage("Create nginx-conroller") {
             steps {
                 script {
-                    dir('nginx-controller') {
+                    dir('kubernetes/nginx-controller') {
                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
@@ -21,7 +21,7 @@ pipeline {
         stage("Create prometheus") {
             steps {
                 script {
-                    dir('prometheus') {
+                    dir('kubernetes/prometheus') {
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
                     }
@@ -32,8 +32,9 @@ pipeline {
         stage("Deploy voting-app to EKS") {
             steps {
                 script {
-                    dir('voting-app') {
-                        sh "kubectl apply -f voting.yaml"
+                    dir('kubernetes/voting-app') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
                     }
                 }
             }
@@ -42,8 +43,9 @@ pipeline {
         stage("Deploy sock-shop to EKS") {
             steps {
                 script {
-                    dir('microservices') {
-                        sh "kubectl apply -f complete-deployment.yaml"
+                    dir('kubernetes/microservices') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
                     }
                 }
             }
@@ -52,7 +54,7 @@ pipeline {
         stage("Deploy ingress-rule to EKS") {
             steps {
                 script {
-                    dir('ingress-rule') {
+                    dir('kubernetes/ingress-rule') {
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
                     }
