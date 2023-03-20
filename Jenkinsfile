@@ -42,7 +42,7 @@ pipeline {
         stage("Deploy sock-shop to EKS") {
             steps {
                 script {
-                    dir('sock-shop') {
+                    dir('microservices') {
                         sh "kubectl apply -f complete-deployment.yaml"
                     }
                 }
