@@ -35,7 +35,7 @@ provider "helm" {
        #host                   = data.aws_eks_cluster.exam.endpoint
       # cluster_ca_certificate = base64decode(data.aws_eks_cluster.exam.certificate_authority[0].data)
        #token                  = data.aws_eks_cluster_auth.exam_auth.token
-      config_path = "~/.kube/config"
+       config_path = "~/.kube/config"
     }
 }
 
@@ -52,5 +52,5 @@ provider "kubectl" {
    host                   = data.aws_eks_cluster.exam.endpoint
    cluster_ca_certificate = base64decode(data.aws_eks_cluster.exam.certificate_authority[0].data)
    token                  = data.aws_eks_cluster_auth.exam_auth.token
-    config_path = "~/.kube/config"
+   config_path = "~/.kube/config"
 }
