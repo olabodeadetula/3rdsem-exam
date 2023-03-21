@@ -22,7 +22,7 @@ resource "aws_iam_role" "test_oidc" {
 }
 
 resource "aws_iam_policy" "test-policy" {
-  name = "exam-policy"
+  name = "exam-iampolicy"
 
   policy = jsonencode({
     Statement = [{

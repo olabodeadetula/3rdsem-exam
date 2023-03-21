@@ -177,7 +177,7 @@ resource "aws_route_table_association" "thirdexam-public-subnet1b" {
 # Create EKS Cluster
 
 resource "aws_iam_role" "exam" {
-  name = "exam-eks-cluster"
+  name = "exams-ekscluster"
 
   assume_role_policy = <<POLICY
 {
@@ -219,7 +219,7 @@ resource "aws_eks_cluster" "exam" {
 # Create a single instance group
 
 resource "aws_iam_role" "thirdexam-nodes" {
-  name = "thirdexam-eks-node-group"
+  name = "exam-eks-node-group"
 
   assume_role_policy = jsonencode({
     Statement = [{
