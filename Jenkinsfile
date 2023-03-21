@@ -6,10 +6,10 @@ pipeline {
         AWS_DEFAULT_REGION = "eu-west-2"
     }
     stages {
-        stage("Create nginx-controller") {
+        stage("Create NGINX-Controller") {
             steps {
                 script {
-                    dir('kubernetes/nginx-controller') {
+                    dir('nginx-controller') {
                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage("Create prometheus") {
+        stage("Create Prometheus") {
             steps {
                 script {
                     dir('kubernetes/prometheus') {
