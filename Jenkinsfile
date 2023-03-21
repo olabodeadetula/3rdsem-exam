@@ -12,7 +12,7 @@ pipeline {
                     dir('kubernetes/nginx-controller') {
                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
                         sh "terraform init"
-                        sh "terraform apply -auto-approve"
+                        sh "terraform apply -lock=false -auto-approve"
                     }
                 }
             }
