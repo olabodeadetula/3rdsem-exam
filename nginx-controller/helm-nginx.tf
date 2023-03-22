@@ -17,7 +17,7 @@ resource "kubernetes_namespace" "nginx-namespace" {
 
 resource "helm_release" "ingress_nginx" {
   depends_on = [kubernetes_namespace.nginx-namespace, time_sleep.wait_for_kubernetes]
-  name       = "ingress-nginx"
+  name       = "ingressnginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
   version    = "4.5.2"
