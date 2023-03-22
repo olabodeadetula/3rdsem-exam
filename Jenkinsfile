@@ -9,7 +9,7 @@ pipeline {
         stage("Create NGINX-Controller") {
             steps {
                 script {
-                    dir('nginx-controller') {
+                    dir('kubernetes/nginx-controller') {
                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
