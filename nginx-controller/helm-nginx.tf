@@ -11,15 +11,15 @@ resource "kubernetes_namespace" "nginx-namespace" {
 
   depends_on = [time_sleep.wait_for_kubernetes]
   metadata {
-    name = "nginxingress"
+    name = "nginx-ingress"
   }
 }
 
 resource "helm_release" "ingress_nginx" {
   depends_on = [kubernetes_namespace.nginx-namespace, time_sleep.wait_for_kubernetes]
-  name       = "ingressnginx"
+  name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingressnginx"
+  chart      = "ingress-nginx"
   version    = "4.5.2"
 
   namespace        = kubernetes_namespace.nginx-namespace.id
