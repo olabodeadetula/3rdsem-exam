@@ -21,7 +21,7 @@ pipeline {
         stage("Create Prometheus") {
             steps {
                 script {
-                    dir('kubernetes/prometheus') {
+                    dir('prometheus') {
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
                     }
