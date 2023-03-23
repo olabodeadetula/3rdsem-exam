@@ -235,17 +235,17 @@ resource "aws_iam_role" "thirdexamnodes" {
 
 resource "aws_iam_role_policy_attachment" "nodes-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.thirdexam-nodes.name
+  role       = aws_iam_role.thirdexamnodes.name
 }
 
 resource "aws_iam_role_policy_attachment" "nodes-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.thirdexam-nodes.name
+  role       = aws_iam_role.thirdexamnodes.name
 }
 
 resource "aws_iam_role_policy_attachment" "nodes-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.thirdexam-nodes.name
+  role       = aws_iam_role.thirdexamnodes.name
 }
 
 resource "aws_eks_node_group" "thirdexam-private-nodes" {
