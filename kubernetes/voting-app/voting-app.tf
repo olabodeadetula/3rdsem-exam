@@ -1,114 +1,146 @@
 resource "kubernetes_deployment" "kube-voting-deployment" {
   metadata {
-    name      = "voting-app-deployment"
+    name      = "azure-vote-back"
     namespace =  kubernetes_namespace.kube-namespace.id
     labels = {
       name = "exam-voting-app"
     }
   }
+
   spec {
-    replicas = 3
+    replicas = 1
     selector {
       match_labels = {
-        name = "voting-app-pod"
-        app = "exam-voting-app"
+        app = "azure-vote-back"
       }
     }
     template {
       metadata {
-        name =  "voting-app-pod"
+        name =  "azure-vote-back"
         labels = {
-          name = "voting-app-pod"
-          app = "exam-voting-app"
+          app = "azure-vote-back"
         }
       }
       spec {
         container {
-          image = "mcr.microsoft.com/azuredocs/azure-vote-front:v1"
-          name  = "voting-app"
+          image = "mcr.microsoft.com/oss/bitnami/redis:6.0.8"
+          name  = "azure-vote-back"
+
+          env {
+            name = "ALLOW_EMPTY_PASSWORD"
+            value = "yes"
+          }
+
       port {
-        container_port = 80
+        container_port = 6379
+        name = "redis"
       }
       }
     }
   }
 }
 }
+
+
+
 # Create kubernetes  for cart service
+
 resource "kubernetes_service" "kube-voting-service" {
   metadata {
-    name      = "voting-app-service"
+    name      = "azure-vote-back"
     namespace =  kubernetes_namespace.kube-namespace.id
-    labels = {
-        name = "voting-app-service"
-        app = "exam-voting-app"
-    }
+
   }
   spec {
     selector = {
-      name = "voting-app-pod"
-      app = "exam-voting-app"
+      app = "azure-vote-back"
     }
     port {
-      port        = 80
-      target_port = 80
+      port        = 6379
+      target_port = 6379
     }
   }
 }
-# New
+
+
+# newwwwwwwww
+
 resource "kubernetes_deployment" "kube-voting-backend-deployment" {
   metadata {
-    name      = "voting-backend-deployment"
+    name      = "azure-vote-front"
     namespace =  kubernetes_namespace.kube-namespace.id
     labels = {
-      name = "exam-voting-app"
+      name = "azure-vote-front"
     }
   }
+
   spec {
-    replicas = 3
+    replicas = 1
     selector {
       match_labels = {
-        name = "voting-app-pod"
-        app = "exam-voting-app"
+        app = "azure-vote-front"
       }
     }
+    strategy {
+        rolling_update {
+            max_surge = 1
+            max_unavailable = 1
+        }
+    }
+    min_ready_seconds = 5
+
     template {
       metadata {
-        name =  "voting-app-pod"
+        name =  "azure-vote-back"
         labels = {
-          name = "voting-app-pod"
-          app = "exam-voting-app"
+          app = "azure-vote-front"
         }
       }
       spec {
+        node_selector = {
+        "beta.kubernetes.io/os" = "linux"
+      }
         container {
           image = "mcr.microsoft.com/azuredocs/azure-vote-front:v1"
-          name  = "backend-voting-app"
+          name  = "azure-vote-front"
+
       port {
         container_port = 80
+      }
+       resources {
+        limits = {
+          cpu = "500m"
+        }
+        requests = {
+          cpu = "250m"
+        }
+      }
+      env {
+        name = "REDIS"
+        value = "azure-vote-back"
       }
       }
     }
   }
 }
 }
+
+
+
 # Create kubernetes  for cart service
-resource "kubernetes_service" "kube-voting-app-service" {
+
+resource "kubernetes_service" "kube-frontend-service" {
   metadata {
-    name      = "voting-service"
+    name      = "azure-vote-front"
     namespace =  kubernetes_namespace.kube-namespace.id
    /*  annotations = {
         prometheus.io/scrape: "true"
     } */
-    labels = {
-        name = "voting-service"
-        app = "exam-voting-app"
-    }
+
   }
   spec {
     selector = {
-      name = "voting-app-pod"
-      app = "exam-voting-app"
+      app = "azure-vote-front"
     }
     port {
       port        = 80
