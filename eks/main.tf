@@ -219,7 +219,7 @@ resource "aws_eks_cluster" "exam" {
 # Create a single instance group
 
 resource "aws_iam_role" "thirdexamnodes" {
-  name = "exam-eks-node-group"
+  name = "exam-eks-nodegroup"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -259,7 +259,7 @@ resource "aws_eks_node_group" "thirdexam-private-nodes" {
   ]
 
   capacity_type  = "ON_DEMAND"
-  instance_types = ["t2.xlarge"]
+  instance_types = ["t3.large"]
 
   scaling_config {
     desired_size = 3
