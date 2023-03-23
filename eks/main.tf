@@ -251,7 +251,7 @@ resource "aws_iam_role_policy_attachment" "nodes-AmazonEC2ContainerRegistryReadO
 resource "aws_eks_node_group" "thirdexam-private-nodes" {
   cluster_name    = aws_eks_cluster.exam.name
   node_group_name = "thirdexam-private-nodes"
-  node_role_arn   = aws_iam_role.thirdexam-nodes.arn
+  node_role_arn   = aws_iam_role.thirdexamnodes.arn
 
   subnet_ids = [
     aws_subnet.thirdexam-private-subnet1a.id,
