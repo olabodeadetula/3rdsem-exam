@@ -10,6 +10,22 @@ pipeline {
     }
     stages {
      
+
+        stage("Create NGINX-Controller") {
+             when {
+                expression { params.ENVIRONMENT == 'create' }
+            }
+            steps {
+                script {
+                    dir('nginx-controller') {
+                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve"
+                    }
+                }
+            }
+        }
+
         stage("Create PROMETHEUS") {
              when {
                 expression { params.ENVIRONMENT == 'create' }
@@ -17,7 +33,6 @@ pipeline {
             steps {
                 script {
                     dir('prometheus') {
-                        sh "aws eks --region eu-west-2 update-kubeconfig --name exam"
                         sh "terraform init"
                         sh "terraform apply -auto-approve"
                     }
@@ -68,20 +83,19 @@ pipeline {
         }
 
 
-        stage("Create NGINX-Controller") {
+
+         stage("destroy NGINX-conroller") {
              when {
-                expression { params.ENVIRONMENT == 'create' }
+                expression { params.ENVIRONMENT == 'destroy' }
             }
             steps {
                 script {
                     dir('nginx-controller') {
-                        sh "terraform init"
-                        sh "terraform apply -auto-approve"
+                         sh "terraform destroy -auto-approve"
                     }
                 }
             }
         }
-
 
 
          stage("Destroy PROMETHEUS") {
@@ -135,19 +149,5 @@ pipeline {
                 }
             }
         }
-        
-         stage("destroy NGINX-conroller") {
-             when {
-                expression { params.ENVIRONMENT == 'destroy' }
-            }
-            steps {
-                script {
-                    dir('nginx-controller') {
-                         sh "terraform destroy -auto-approve"
-                    }
-                }
-            }
-        }
-
     }
 }
