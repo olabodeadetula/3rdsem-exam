@@ -84,7 +84,7 @@ pipeline {
 
 
 
-         stage("destroy NGINX-conroller") {
+         stage("destroy NGINX-controller") {
              when {
                 expression { params.ENVIRONMENT == 'destroy' }
             }
